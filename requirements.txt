@@ -1,0 +1,13 @@
+requests>=2.32
+beautifulsoup4>=4.12
+lxml>=4.9
+python-dotenv>=1.0
+
+# Dependencias específicas de este proyecto (MySQL)
+pymysql
+
+# Librerías de datos y utilidades (para replicar la estabilidad general)
+pandas>=2.2
+tqdm>=4.66
+charset-normalizer>=3.3
+rapidfuzz>=3.9

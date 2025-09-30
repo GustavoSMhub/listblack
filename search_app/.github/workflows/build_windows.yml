@@ -1,0 +1,60 @@
+# GitHub Actions Workflow para Compilar la Aplicación Flask/PyInstaller para Windows (64-bit)
+
+name: Compilacion y Despliegue para Windows (PyInstaller)
+
+on:
+  # Dispara el flujo de trabajo manualmente desde la interfaz de GitHub
+  workflow_dispatch:
+  # O dispara automáticamente cuando se hace un push a la rama 'main' (opcional)
+  push:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    # Utilizamos un servidor virtual con Windows (la clave de la compilación cruzada)
+    runs-on: windows-latest
+
+    steps:
+      # Paso 1: Descargar el código fuente del repositorio
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      # Paso 2: Crear el Archivo .env
+      # PyInstaller necesita este archivo para incluirlo en el paquete
+      # Nota: Usamos Set-Content en PowerShell para crear el archivo en Windows
+      - name: Crear .env para PyInstaller
+        run: |
+          $content = @"
+          MYSQL_HOST=notserv
+          MYSQL_USER=user_de_ejemplo
+          MYSQL_PASSWORD=pwd_de_ejemplo
+          MYSQL_DATABASE=compliance_db
+          MYSQL_PORT=3306
+          "@
+          Set-Content -Path .env -Value $content
+        shell: powershell
+
+      # Paso 3: Configurar Python (versión moderna y compatible, 64-bit)
+      - name: Set up Python 3.11 (64-bit)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          architecture: 'x64' # Esencial para asegurar que sea 64 bits
+
+      # Paso 4: Instalar las dependencias
+      # PyInstaller necesita las mismas dependencias de tu proyecto
+      - name: Instalar PyInstaller y Dependencias
+        run: pip install pyinstaller pymysql rapidfuzz pytz requests beautifulsoup4 python-dotenv
+
+      # Paso 5: Ejecutar PyInstaller usando el archivo de especificaciones
+      - name: Compilar la Aplicación
+        # El comando se ejecuta desde la raíz, donde está busqueda_app.spec
+        run: pyinstaller busqueda_app.spec
+
+      # Paso 6: Empaquetar y subir el resultado como un artefacto de GitHub
+      - name: Subir el Paquete (Artefacto)
+        uses: actions/upload-artifact@v4
+        with:
+          name: busqueda_unificada_windows_package
+          # Ruta donde PyInstaller coloca el resultado de la compilación
+          path: dist/busqueda_unificada_win/

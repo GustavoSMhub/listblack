@@ -1,0 +1,17 @@
+Configuración y Entornos
+.env
+.venv/
+venv/
+instance/
+
+Archivos de Python Compilados
+pycache/
+*.pyc
+*.o
+*.so
+
+PyInstaller y Compilación (CRÍTICO)
+Estos archivos se generan al compilar y no deben ir a GitHub.
+build/
+dist/
+*.spec
