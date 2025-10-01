@@ -1,12 +1,18 @@
+# Framework principal de la aplicación web
+Flask
+Flask-Login
+
+# Conexión a la base de datos (usando el truco de PyMySQL)
+pymysql
+Flask-MySQLdb
+
+# Librerías para scraping y APIs
 requests>=2.32
 beautifulsoup4>=4.12
 lxml>=4.9
+
+# Utilidades
 python-dotenv>=1.0
-
-# Dependencias específicas de este proyecto (MySQL)
-pymysql
-
-# Librerías de datos y utilidades (para replicar la estabilidad general)
 pandas>=2.2
 tqdm>=4.66
 charset-normalizer>=3.3
