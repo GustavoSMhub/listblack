@@ -5,13 +5,13 @@ name: Compilacion y Despliegue para Windows (PyInstaller)
 on:
   # Dispara el flujo de trabajo manualmente desde la interfaz de GitHub
   workflow_dispatch:
-  # O dispara automáticamente cuando se hace un push a la rama 'main' (opcional)
+  # O dispara automáticamente cuando se hace un push a la rama 'main'
   push:
     branches: [ main ]
 
 jobs:
   build-windows:
-    # Utilizamos un servidor virtual con Windows (la clave de la compilación cruzada)
+    # Utilizamos un servidor virtual con Windows
     runs-on: windows-latest
 
     steps:
@@ -19,9 +19,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       
-      # Paso 2: Crear el Archivo .env
-      # PyInstaller necesita este archivo para incluirlo en el paquete
-      # Nota: Usamos Set-Content en PowerShell para crear el archivo en Windows
+      # Paso 2: Crear el Archivo .env para PyInstaller
       - name: Crear .env para PyInstaller
         run: |
           $content = @"
@@ -34,24 +32,21 @@ jobs:
           Set-Content -Path .env -Value $content
         shell: powershell
 
-      # Paso 3: Configurar Python (versión moderna y compatible, 64-bit)
+      # Paso 3: Configurar Python 3.11 (64-bit)
       - name: Set up Python 3.11 (64-bit)
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          architecture: 'x64' # Esencial para asegurar que sea 64 bits
+          architecture: 'x64'
 
-      # Paso 4: Instalar las dependencias
-      # PyInstaller necesita las mismas dependencias de tu proyecto
-      - name: Instalar PyInstaller y Dependencias
-      - name: Instalar Dependencias desde requirements.txt
+      # Paso 4: Instalar las dependencias usando requirements.txt
+      - name: Instalar Dependencias
         run: |
-        pip install pyinstaller
-        pip install -r requirements.txt
+          pip install pyinstaller
+          pip install -r requirements.txt
 
       # Paso 5: Ejecutar PyInstaller usando el archivo de especificaciones
       - name: Compilar la Aplicación
-        # El comando se ejecuta desde la raíz, donde está busqueda_app.spec
         run: pyinstaller busqueda_app.spec
 
       # Paso 6: Empaquetar y subir el resultado como un artefacto de GitHub
@@ -59,5 +54,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: busqueda_unificada_windows_package
-          # Ruta donde PyInstaller coloca el resultado de la compilación
           path: dist/busqueda_unificada_win/
