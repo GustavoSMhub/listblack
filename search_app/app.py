@@ -1,6 +1,7 @@
 # Ruta: search_app/app.py
 # Nombre del archivo: app.py
-
+import pymysql
+pymysql.install_as_MySQLdb()
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_mysqldb import MySQL
@@ -12,7 +13,8 @@ from datetime import date
 from rapidfuzz import fuzz 
 
 # Importamos las funciones de carga de datos y las de consulta de fecha del módulo modular
-from .data_importer import (
+# ...
+from search_app.data_importer import (
     run_efos_update, 
     run_ofac_update, 
     get_last_update_time_efos, 
