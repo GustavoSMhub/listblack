@@ -13,7 +13,7 @@ a = Analysis(
         ('data', 'data'),  # Incluye tu carpeta de datos
         ('sql', 'sql')    # Incluye tu carpeta de archivos sql
     ],
-    hiddenimports=[],  # Nombres de librerías que PyInstaller podría no encontrar
+    hiddenimports=['flask'],  # Nombres de librerías que PyInstaller podría no encontrar
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
