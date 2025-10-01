@@ -8,7 +8,8 @@ a = Analysis(
     pathex=['.'],  # Añade el directorio raíz a la ruta de búsqueda de Python
     binaries=[],
     datas=[
-        ('search_app/templates', 'search_app/templates'),  # Incluye la carpeta de plantillas de Flask
+        ('search_app/templates', 'templates'),  # Incluye la carpeta de plantillas de Flask
+        ('search_app/static', 'static'), 
         ('.env', '.'),  # Incluye el archivo .env que crea el workflow
         ('data', 'data'),  # Incluye tu carpeta de datos
         ('sql', 'sql')    # Incluye tu carpeta de archivos sql
